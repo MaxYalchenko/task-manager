@@ -1,0 +1,90 @@
+{
+  "info": {
+    "_postman_id": "task-manager-full",
+    "name": "Task Manager Full",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register User",
+      "request": {
+        "method": "POST",
+        "header": [{"key": "Content-Type", "value": "application/json"}],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"password\": \"123456\"\n}"
+        },
+        "url": {"raw": "http://localhost:8080/api/auth/register", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api","auth","register"]}
+      }
+    },
+    {
+      "name": "Login User",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"Content-Type","value":"application/json"}],
+        "body": {"mode":"raw","raw":"{\n  \"email\": \"{{email}}\",\n  \"password\": \"123456\"\n}"},
+        "url": {"raw":"http://localhost:8080/api/auth/login","protocol":"http","host":["localhost"],"port":"8080","path":["api","auth","login"]}
+      },
+      "event":[
+        {
+          "listen":"test",
+          "script":{
+            "exec":[
+              "var jsonData = pm.response.json();",
+              "pm.environment.set('token', jsonData.token);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header":[{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}],
+        "body":{"mode":"raw","raw":"{\n  \"title\": \"Test Task\",\n  \"description\": \"Description\",\n  \"status\": \"TODO\",\n  \"priority\": \"MEDIUM\"\n}"},
+        "url":{"raw":"http://localhost:8080/api/tasks","protocol":"http","host":["localhost"],"port":"8080","path":["api","tasks"]}
+      }
+    },
+    {
+      "name": "Get Task by ID",
+      "request": {
+        "method": "GET",
+        "header":[{"key":"Authorization","value":"Bearer {{token}}"}],
+        "url":{"raw":"http://localhost:8080/api/tasks/{{taskId}}","protocol":"http","host":["localhost"],"port":"8080","path":["api","tasks","{{taskId}}"]}
+      }
+    },
+    {
+      "name": "Update Task",
+      "request": {
+        "method": "PUT",
+        "header":[{"key":"Content-Type","value":"application/json"},{"key":"Authorization","value":"Bearer {{token}}"}],
+        "body":{"mode":"raw","raw":"{\n  \"title\": \"Updated Task\",\n  \"description\": \"Updated Desc\",\n  \"status\": \"IN_PROGRESS\",\n  \"priority\": \"HIGH\",\n  \"assigneeId\": null\n}"},
+        "url":{"raw":"http://localhost:8080/api/tasks/{{taskId}}","protocol":"http","host":["localhost"],"port":"8080","path":["api","tasks","{{taskId}}"]}
+      }
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header":[{"key":"Authorization","value":"Bearer {{token}}"}],
+        "url":{"raw":"http://localhost:8080/api/tasks/{{taskId}}","protocol":"http","host":["localhost"],"port":"8080","path":["api","tasks","{{taskId}}"]}
+      }
+    },
+    {
+      "name": "Filter Tasks",
+      "request": {
+        "method": "GET",
+        "header":[{"key":"Authorization","value":"Bearer {{token}}"}],
+        "url":{"raw":"http://localhost:8080/api/tasks?status=TODO","protocol":"http","host":["localhost"],"port":"8080","path":["api","tasks"]}
+      }
+    }
+  ],
+  "event":[],
+  "variable":[
+    {"key":"token","value":""},
+    {"key":"username","value":"user1"},
+    {"key":"email","value":"user1@test.com"},
+    {"key":"taskId","value":"1"}
+  ]
+}
