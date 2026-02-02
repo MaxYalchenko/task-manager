@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: task-manager
+
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+#http://localhost:8080/h2-console
+
+jwt:
+  secret: "4F+KWfL5DvxsYzZl1KUeUhClyH1mY5pqtyt0HzRpLjVbLciw71DsMRva9UD03+WmstpUp1zOhzvYskmm5DvyZg=="
+  expiration: 86400000
